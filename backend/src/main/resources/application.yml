@@ -41,6 +41,16 @@ spring:
       filter:
         enabled: true
 
+  # SMTP gửi hoá đơn qua email
+  mail:
+    host: ${MAIL_HOST:localhost}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.auth: ${MAIL_SMTP_AUTH:true}
+      mail.smtp.starttls.enable: ${MAIL_STARTTLS:true}
+
   servlet:
     multipart:
       max-file-size: 10MB
@@ -50,6 +60,9 @@ app:
   url: ${APP_URL:http://localhost:8000}
   frontend-urls: ${FRONTEND_URLS:http://localhost:5173,http://localhost:5175}
   cloudinary-url: ${CLOUDINARY_URL:}
+  mail:
+    from-address: ${MAIL_FROM_ADDRESS:no-reply@shoptech.local}
+    from-name: ${MAIL_FROM_NAME:ShopTech}
   jwt:
     secret: ${JWT_SECRET:change-me-to-a-long-random-secret-at-least-32-bytes}
     ttl-minutes: ${JWT_TTL:60}

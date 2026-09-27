@@ -9,10 +9,14 @@ public record AppProperties(
         String url,
         List<String> frontendUrls,
         Jwt jwt,
-        String cloudinaryUrl
+        String cloudinaryUrl,
+        Mail mail
 ) {
 
     public record Jwt(String secret, long ttlMinutes, String cookieName, boolean cookieSecure) {
+    }
+
+    public record Mail(String fromAddress, String fromName) {
     }
 
     /** URL công khai của file trong thư mục storage (URL tuyệt đối thì giữ nguyên). */

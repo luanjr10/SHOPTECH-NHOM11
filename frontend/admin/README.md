@@ -10,6 +10,11 @@ Giao diện quản trị ShopTech (React 19 + TypeScript + Vite + Tailwind CSS 4
 - Quản lý danh mục (cây danh mục cha/con, ảnh hoặc icon, thương hiệu, Quick Link)
 - Quản lý thương hiệu
 - Quản lý nhân viên và phân quyền theo từng chức năng
+- Khách hàng và hạng thành viên
+- Nổi bật trang chủ (Flash sale, Hot trend)
+- Duyệt người bán, quản lý gian hàng
+- Đơn hàng & hoá đơn (PDF, gửi email)
+- Đánh giá sản phẩm & người theo dõi gian hàng
 
 ## Chạy local
 

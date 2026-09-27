@@ -23,7 +23,13 @@ com.shoptech
     ├── category   # danh mục (+ Mongo: category_images)
     ├── usecase    # Quick Link của danh mục (Mongo: use_cases)
     ├── brand      # thương hiệu
-    └── employee   # nhân viên + phân quyền theo module
+    ├── employee   # nhân viên + phân quyền theo module
+    ├── customer   # khách hàng, hạng thành viên theo tổng chi tiêu
+    ├── highlight  # Flash sale / Hot trend trên trang chủ
+    ├── setting    # cấu hình key/value (site_settings)
+    ├── seller     # đơn đăng ký người bán, hồ sơ + ví người bán
+    ├── order      # đơn hàng, hoá đơn PDF (Thymeleaf + OpenHTMLtoPDF), gửi email
+    └── review     # đánh giá sản phẩm, người theo dõi gian hàng
 ```
 
 Mỗi module: `controller → service → repository → entity/document`, dữ liệu vào/ra qua `dto`.
@@ -37,6 +43,12 @@ Mỗi module: `controller → service → repository → entity/document`, dữ 
 | Sản phẩm    | `GET/POST /api/products`, `GET/PUT/DELETE /api/products/{id}`   |
 | Danh mục    | `GET/POST /api/categories`, `GET/PATCH/DELETE /api/categories/{id}`, `POST/DELETE /api/categories/{id}/image`, `/api/categories/{id}/use-cases` |
 | Thương hiệu | `GET/POST /api/brands`, `GET /api/brands/all`, `GET/PATCH/DELETE /api/brands/{id}` |
+| Khách hàng  | `GET /api/admin/customers`, `GET /api/admin/customers/{id}` |
+| Nổi bật     | `GET/PUT /api/admin/home-highlights/flash-sale`, `GET /api/admin/home-highlights/products`, `PATCH /api/admin/home-highlights/products/{id}` |
+| Người bán   | `GET /api/admin/seller-applications`, `GET .../{id}`, `POST .../{id}/approve`, `POST .../{id}/reject` |
+| Gian hàng   | `GET /api/admin/stores`, `PATCH /api/admin/stores/{id}/status` |
+| Đơn hàng    | `GET /api/admin/orders`, `GET .../{id}`, `GET .../{id}/invoice/pdf`, `POST .../{id}/invoice/email` |
+| Đánh giá    | `GET /api/admin/reviews`, `DELETE /api/admin/reviews/{id}`, `GET /api/admin/store-follows` |
 | Nhân viên   | `GET/POST /api/admin/employees`, `GET/PATCH/DELETE /api/admin/employees/{id}`, `PUT /api/admin/employees/{id}/permissions`, `GET /api/admin/permission-modules` |
 
 Response chung: `{ success, message?, data?, meta?, errors? }`; lỗi validate trả `422` kèm `errors: { field: [message] }`.
@@ -44,7 +56,8 @@ Response chung: `{ success, message?, data?, meta?, errors? }`; lỗi validate t
 ## Chạy local
 
 1. Cài JDK 21+ và đặt biến môi trường `JAVA_HOME`.
-2. Tạo file cấu hình: `cp .env.example .env` rồi điền thông tin MySQL, `MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_URL`.
+2. Tạo file cấu hình: `cp .env.example .env` rồi điền thông tin MySQL, `MONGODB_URI`, `JWT_SECRET`, `CLOUDINARY_URL`
+   và SMTP (`MAIL_*`) để gửi hoá đơn qua email.
 3. Chạy:
 
 ```bash
@@ -55,6 +68,7 @@ API chạy tại `http://localhost:8000`.
 
 ## Ghi chú
 
+- Hoá đơn PDF dùng font DejaVu Sans (kèm trong `resources/fonts`) để hiển thị đúng tiếng Việt.
 - `ddl-auto: none` — Hibernate không tự thay đổi schema database. Thời gian lưu và xử lý theo UTC.
 - `product_specifications.specifications/variants` trong Mongo được lưu dạng chuỗi JSON (một số bản ghi là mảng) —
   backend đọc được cả hai dạng.

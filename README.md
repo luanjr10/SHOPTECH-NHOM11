@@ -14,6 +14,19 @@ Hệ thống quản trị sàn thương mại điện tử bán đồ công ngh�
 - **Quản lý danh mục** — danh mục cha/con, hiển thị bằng icon hoặc ảnh, gắn thương hiệu, Quick Link
 - **Quản lý thương hiệu** — thêm/sửa/xoá, logo
 - **Quản lý nhân viên** — tạo tài khoản nhân viên, phân quyền xem/thêm/sửa/xoá theo từng chức năng
+- **Khách hàng** — danh sách, tổng chi tiêu, hạng thành viên (Đồng/Bạc/Vàng/Kim Cương), lịch sử đơn
+- **Nổi bật trang chủ** — hẹn giờ kết thúc Flash sale, chọn sản phẩm Flash sale / Hot trend
+- **Người bán** — duyệt / từ chối đơn đăng ký mở gian hàng
+- **Gian hàng** — theo dõi, tạm ẩn / kích hoạt gian hàng
+- **Đơn hàng & Hoá đơn** — xem chi tiết đơn theo gian hàng, xuất hoá đơn PDF, gửi hoá đơn qua email
+- **Đánh giá & Theo dõi** — kiểm duyệt đánh giá sản phẩm, xem người theo dõi gian hàng
+
+## Phân công
+
+| Thành viên     | Chức năng phụ trách                                                                 |
+|----------------|--------------------------------------------------------------------------------------|
+| Bùi Văn Luân   | Dashboard, Quản lý sản phẩm, Quản lý danh mục, Quản lý thương hiệu, Quản lý nhân viên |
+| Hồ Trọng Dũng  | Khách hàng, Nổi bật trang chủ, Người bán, Gian hàng, Đơn hàng & Hoá đơn, Đánh giá & Theo dõi |
 
 ## Kiến trúc
 

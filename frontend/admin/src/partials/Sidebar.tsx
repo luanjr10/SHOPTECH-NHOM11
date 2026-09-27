@@ -6,6 +6,12 @@ import {
   FolderTree,
   Tag,
   Users,
+  UserRound,
+  Flame,
+  Store,
+  ShoppingBag,
+  ClipboardList,
+  Star,
   ChevronsLeft,
   type LucideIcon,
 } from "lucide-react";
@@ -44,6 +50,17 @@ const SECTIONS: NavSection[] = [
       { to: "/categories", label: "Danh mục", icon: FolderTree, module: "categories" },
       { to: "/brands", label: "Thương hiệu", icon: Tag, module: "brands" },
       { to: "/employee", label: "Nhân viên", icon: Users, adminOnly: true },
+      { to: "/customers", label: "Khách hàng", icon: UserRound, module: "customers" },
+      { to: "/home-highlights", label: "Nổi bật trang chủ", icon: Flame, module: "home_highlights" },
+    ],
+  },
+  {
+    title: "Sàn TMĐT",
+    items: [
+      { to: "/sellers", label: "Người bán", icon: Store, module: "seller_applications" },
+      { to: "/stores", label: "Gian hàng", icon: ShoppingBag, module: "stores" },
+      { to: "/orders", label: "Đơn hàng & Hóa đơn", icon: ClipboardList, module: "orders" },
+      { to: "/reviews", label: "Đánh giá & Theo dõi", icon: Star, module: "reviews" },
     ],
   },
 ];
