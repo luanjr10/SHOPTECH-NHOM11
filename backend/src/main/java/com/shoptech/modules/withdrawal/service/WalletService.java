@@ -1,0 +1,65 @@
+package com.shoptech.modules.withdrawal.service;
+
+import com.shoptech.modules.seller.entity.SellerWallet;
+import com.shoptech.modules.seller.repository.SellerWalletRepository;
+import com.shoptech.modules.withdrawal.entity.WalletTransaction;
+import com.shoptech.modules.withdrawal.repository.WalletTransactionRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+
+/**
+ * Cập nhật số dư ví người bán cho luồng rút tiền, mỗi thay đổi đều ghi nhật ký wallet_transactions.
+ * Khi seller tạo yêu cầu rút, tiền đã được trừ khỏi "có thể rút"; duyệt → trừ tổng số dư,
+ * từ chối → hoàn lại vào "có thể rút".
+ */
+@Service
+@RequiredArgsConstructor
+public class WalletService {
+
+    private static final String REFERENCE_TYPE = "withdrawal_request";
+
+    private final SellerWalletRepository walletRepository;
+    private final WalletTransactionRepository transactionRepository;
+
+    /** Rút tiền được duyệt: trừ tổng số dư. */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void payout(Long sellerProfileId, BigDecimal amount, Long withdrawalId) {
+        walletRepository.findBySellerProfileIdForUpdate(sellerProfileId).ifPresent(wallet -> {
+            wallet.setBalance(wallet.getBalance().subtract(amount).max(BigDecimal.ZERO));
+            touch(wallet);
+            log(wallet, "debit", amount, withdrawalId, "Rút tiền được duyệt");
+        });
+    }
+
+    /** Từ chối rút: hoàn tiền về số dư có thể rút. */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void refundWithdrawal(Long sellerProfileId, BigDecimal amount, Long withdrawalId) {
+        walletRepository.findBySellerProfileIdForUpdate(sellerProfileId).ifPresent(wallet -> {
+            wallet.setWithdrawableBalance(wallet.getWithdrawableBalance().add(amount));
+            touch(wallet);
+            log(wallet, "refund", amount, withdrawalId, "Từ chối rút, hoàn tiền vào ví");
+        });
+    }
+
+    private void touch(SellerWallet wallet) {
+        wallet.setUpdatedAt(Instant.now());
+        walletRepository.save(wallet);
+    }
+
+    private void log(SellerWallet wallet, String type, BigDecimal amount, Long referenceId, String description) {
+        WalletTransaction tx = new WalletTransaction();
+        tx.setSellerWalletId(wallet.getId());
+        tx.setType(type);
+        tx.setAmount(amount);
+        tx.setBalanceAfter(wallet.getBalance());
+        tx.setReferenceType(REFERENCE_TYPE);
+        tx.setReferenceId(referenceId);
+        tx.setDescription(description);
+        transactionRepository.save(tx);
+    }
+}

@@ -13,6 +13,7 @@ interface AuthState {
   loading: boolean;
   login: (loginId: string, password: string) => Promise<AuthUser>;
   logout: () => Promise<void>;
+  updateUser: (user: AuthUser) => void;
 }
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
@@ -40,8 +41,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
+  const updateUser = (u: AuthUser) => setUser(u);
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

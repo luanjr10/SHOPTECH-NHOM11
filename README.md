@@ -14,6 +14,26 @@ Hệ thống quản trị sàn thương mại điện tử bán đồ công ngh�
 - **Quản lý danh mục** — danh mục cha/con, hiển thị bằng icon hoặc ảnh, gắn thương hiệu, Quick Link
 - **Quản lý thương hiệu** — thêm/sửa/xoá, logo
 - **Quản lý nhân viên** — tạo tài khoản nhân viên, phân quyền xem/thêm/sửa/xoá theo từng chức năng
+- **Khách hàng** — danh sách, tổng chi tiêu, hạng thành viên (Đồng/Bạc/Vàng/Kim Cương), lịch sử đơn
+- **Nổi bật trang chủ** — hẹn giờ kết thúc Flash sale, chọn sản phẩm Flash sale / Hot trend
+- **Người bán** — duyệt / từ chối đơn đăng ký mở gian hàng
+- **Gian hàng** — theo dõi, tạm ẩn / kích hoạt gian hàng
+- **Đơn hàng & Hoá đơn** — xem chi tiết đơn theo gian hàng, xuất hoá đơn PDF, gửi hoá đơn qua email
+- **Đánh giá & Theo dõi** — kiểm duyệt đánh giá sản phẩm, xem người theo dõi gian hàng
+- **Hoa hồng** — tỉ lệ hoa hồng mặc định / theo danh mục / theo gian hàng
+- **Voucher** — mã giảm % / số tiền / miễn phí vận chuyển, giới hạn theo hạng khách hàng
+- **Rút tiền** — duyệt, từ chối, giải ngân qua MoMo / VNPay / OnePay / SePay (sandbox)
+- **Quỹ sàn** — tiền đang giữ hộ người bán, tiền đã quyết toán, tổng đã chi trả
+- **Cài đặt tài khoản** — hồ sơ, ảnh đại diện, đổi mật khẩu, đăng xuất thiết bị khác
+- **Đăng ký / Đăng nhập** — đăng ký, đăng nhập (mật khẩu hoặc Google), quên mật khẩu bằng mã email, xác thực email
+
+## Phân công
+
+| Thành viên     | Chức năng phụ trách                                                                 |
+|----------------|--------------------------------------------------------------------------------------|
+| Bùi Văn Luân   | Dashboard, Quản lý sản phẩm, Quản lý danh mục, Quản lý thương hiệu, Quản lý nhân viên |
+| Hồ Trọng Dũng  | Khách hàng, Nổi bật trang chủ, Người bán, Gian hàng, Đơn hàng & Hoá đơn, Đánh giá & Theo dõi |
+| Nguyễn Phạm Thành Công | Hoa hồng, Voucher, Rút tiền, Quỹ sàn, Cài đặt tài khoản, Đăng ký / Đăng nhập |
 
 ## Kiến trúc
 
