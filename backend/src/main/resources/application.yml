@@ -1,0 +1,57 @@
+server:
+  port: ${PORT:8000}
+  forward-headers-strategy: framework
+
+spring:
+  application:
+    name: shoptech-backend
+  config:
+    # Cho phép đặt biến môi trường trong backend/.env khi chạy local
+    import: optional:file:.env[.properties]
+
+  # MySQL: schema có sẵn — KHÔNG để Hibernate tự sửa schema. Timestamp lưu theo UTC.
+  datasource:
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_DATABASE:shoptech}?useUnicode=true&characterEncoding=utf8&connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    properties:
+      hibernate.jdbc.time_zone: UTC
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/shoptech}
+      database: ${MONGODB_DATABASE:shoptech}
+
+  jackson:
+    # API trả JSON dạng snake_case
+    property-naming-strategy: SNAKE_CASE
+    time-zone: UTC
+    serialization:
+      write-dates-as-timestamps: false
+
+  mvc:
+    # Cho phép gửi POST multipart kèm _method=PUT khi sửa sản phẩm / Quick Link
+    hiddenmethod:
+      filter:
+        enabled: true
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 60MB
+
+app:
+  url: ${APP_URL:http://localhost:8000}
+  frontend-urls: ${FRONTEND_URLS:http://localhost:5173,http://localhost:5175}
+  cloudinary-url: ${CLOUDINARY_URL:}
+  jwt:
+    secret: ${JWT_SECRET:change-me-to-a-long-random-secret-at-least-32-bytes}
+    ttl-minutes: ${JWT_TTL:60}
+    cookie-name: access_token
+    cookie-secure: ${JWT_COOKIE_SECURE:false}

@@ -1,0 +1,6 @@
+* text=auto
+
+# Script shell phải giữ LF để chạy được trên macOS/Linux; script Windows giữ CRLF
+*.sh text eol=lf
+backend/mvnw text eol=lf
+*.cmd text eol=crlf
