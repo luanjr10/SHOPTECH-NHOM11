@@ -8,6 +8,7 @@ import com.shoptech.modules.product.entity.Product;
 import com.shoptech.modules.product.repository.ProductRepository;
 import com.shoptech.modules.review.dto.ReviewResponse;
 import com.shoptech.modules.review.dto.StoreFollowResponse;
+import com.shoptech.modules.review.dto.StoreReviewPage;
 import com.shoptech.modules.review.entity.ProductReview;
 import com.shoptech.modules.review.entity.StoreFollow;
 import com.shoptech.modules.review.repository.ProductReviewRepository;
@@ -24,6 +25,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +69,16 @@ public class ReviewService {
             return ReviewResponse.of(r, product, users.get(r.getUserId()));
         }).toList();
         return PagedResult.of(new PageImpl<>(content, result.getPageable(), result.getTotalElements()));
+    }
+
+    /** Điểm trung bình (làm tròn 1 chữ số) và số đánh giá của mọi sản phẩm thuộc gian hàng. */
+    @Transactional(readOnly = true)
+    public StoreReviewPage.Stats storeStats(Long storeId) {
+        Object[] row = reviewRepository.storeStats(storeId).stream().findFirst().orElse(new Object[]{0L, null});
+        long count = row[0] == null ? 0 : ((Number) row[0]).longValue();
+        double average = count == 0 || row[1] == null ? 0
+                : BigDecimal.valueOf(((Number) row[1]).doubleValue()).setScale(1, RoundingMode.HALF_UP).doubleValue();
+        return new StoreReviewPage.Stats(average, count);
     }
 
     @Transactional

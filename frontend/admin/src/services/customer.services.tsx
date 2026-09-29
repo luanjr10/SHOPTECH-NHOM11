@@ -30,3 +30,15 @@ export const getCustomerDetail = async (id: number) => {
   const res = await api.get(`admin/customers/${id}`);
   return res.data;
 };
+
+// ---- Seller Center: khách hàng đã mua tại gian hàng
+
+export const getStoreCustomers = async (storeId: number, params: CustomerListParams = {}) => {
+  const res = await api.get(`seller/stores/${storeId}/customers`, { params });
+  return res.data;
+};
+
+export const getStoreCustomerDetail = async (storeId: number, customerId: number) => {
+  const res = await api.get(`seller/stores/${storeId}/customers/${customerId}`);
+  return res.data;
+};

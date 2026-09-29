@@ -82,6 +82,34 @@ public class InvoiceService {
                 nz(order.totalAmount()));
     }
 
+    /**
+     * Hoá đơn riêng phần đơn của một gian hàng (Seller Center): chỉ sản phẩm của gian hàng đó,
+     * tổng = tạm tính + phí ship của phần đơn (mã giảm giá áp cho cả đơn nên không tính ở đây).
+     */
+    public Invoice buildForSellerOrder(OrderResponse order, Long sellerOrderId) {
+        SellerOrderResponse so = order.sellerOrders().stream()
+                .filter(s -> s.id().equals(sellerOrderId)).findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Phần đơn không thuộc đơn hàng"));
+        var user = order.user();
+        return new Invoice(
+                invoiceNo(order.id()) + "-S" + so.id(),
+                Instant.now(),
+                so.status(),
+                SELLER_ORDER_STATUS_LABELS.getOrDefault(so.status(), so.status()),
+                new Invoice.Party(user == null ? "" : user.name(), user == null ? "" : user.email(),
+                        user == null ? null : user.phone(), null),
+                new Invoice.Party(order.receiverName(), null, order.receiverPhone(), order.shippingAddress()),
+                order.paymentMethod(),
+                order.paidAt(),
+                order.createdAt(),
+                List.of(group(so)),
+                nz(so.subtotal()),
+                nz(so.shippingFee()),
+                BigDecimal.ZERO,
+                null,
+                nz(so.subtotal()).add(nz(so.shippingFee())));
+    }
+
     public byte[] renderPdf(Invoice invoice) {
         String html = templateEngine.process("invoice/pdf", context(invoice));
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
