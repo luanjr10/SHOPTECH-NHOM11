@@ -50,7 +50,8 @@ public class SecurityConfig {
                                 "/api/categories", "/api/categories/**",
                                 "/api/brands", "/api/brands/**",
                                 "/api/use-cases",
-                                "/api/locations/**").permitAll()
+                                "/api/locations/**",
+                                "/api/stores", "/api/stores/**").permitAll()
                         // Phân quyền chi tiết (role + module permission) nằm ở @PreAuthorize trên controller.
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll())

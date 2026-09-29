@@ -24,7 +24,7 @@ class PaymentGatewaySignatureTest {
                     new AppProperties.Payment.OnePay("https://example.test", "TESTMERCHANT", "TESTACCESS",
                             "A3EFDFABA8653DF2342E8DAC29B51AF0", null),
                     new AppProperties.Payment.SePay("TESTMERCHANT", "TESTSEPAYSECRET", "https://example.test")),
-            null);
+            null, null);
 
     @Test
     void vnpayReturnSignatureMatchesReference() {
