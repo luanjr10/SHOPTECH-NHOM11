@@ -49,7 +49,7 @@ Người bán đăng nhập chung trang quản trị, menu hiển thị theo vai
 
 - **Đăng ký / Đăng nhập** — tài khoản khách hàng (mật khẩu hoặc Google), quên mật khẩu
 - **Giỏ hàng** — lưu theo tài khoản, chọn biến thể, kiểm tra tồn kho, tạm tính theo giá hiện tại
-- **Hồ sơ & cài đặt chung** — hồ sơ, ảnh đại diện, hạng thành viên, sổ địa chỉ (tỉnh / quận / phường GHN), đổi mật khẩu, đăng xuất thiết bị khác
+- **Hồ sơ & cài đặt chung** — hồ sơ, ảnh đại diện, đơn hàng của tôi (xem / huỷ, xác nhận đã nhận hàng), hạng thành viên & nhận voucher theo hạng, sổ địa chỉ (tỉnh / quận / phường GHN), đổi mật khẩu, đăng xuất thiết bị khác
 - **Kênh người bán** — gửi đơn đăng ký mở gian hàng, theo dõi trạng thái duyệt
 - **Gian hàng & chi tiết shop** — danh sách gian hàng (tìm kiếm, sắp xếp), trang shop với chỉ số uy tín, danh mục, sản phẩm, theo dõi gian hàng
 - **Yêu cầu hoàn trả / Bảo hành** — gửi yêu cầu hoàn trả hoặc bảo hành kèm ảnh minh chứng cho sản phẩm trong đơn đã hoàn tất

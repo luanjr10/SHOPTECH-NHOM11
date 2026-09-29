@@ -22,7 +22,8 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class WalletService {
 
-    private static final String REFERENCE_TYPE = "withdrawal_request";
+    private static final String WITHDRAWAL = "withdrawal_request";
+    private static final String SELLER_ORDER = "seller_order";
 
     private final SellerWalletRepository walletRepository;
     private final WalletTransactionRepository transactionRepository;
@@ -50,7 +51,7 @@ public class WalletService {
         }
         wallet.setWithdrawableBalance(wallet.getWithdrawableBalance().subtract(amount).max(BigDecimal.ZERO));
         touch(wallet);
-        log(wallet, "hold", amount, withdrawalId, "Giữ chỗ yêu cầu rút tiền");
+        log(wallet, "hold", amount, WITHDRAWAL, withdrawalId, "Giữ chỗ yêu cầu rút tiền");
     }
 
     /** Rút tiền được duyệt: trừ tổng số dư. */
@@ -59,7 +60,7 @@ public class WalletService {
         walletRepository.findBySellerProfileIdForUpdate(sellerProfileId).ifPresent(wallet -> {
             wallet.setBalance(wallet.getBalance().subtract(amount).max(BigDecimal.ZERO));
             touch(wallet);
-            log(wallet, "debit", amount, withdrawalId, "Rút tiền được duyệt");
+            log(wallet, "debit", amount, WITHDRAWAL, withdrawalId, "Rút tiền được duyệt");
         });
     }
 
@@ -69,7 +70,40 @@ public class WalletService {
         walletRepository.findBySellerProfileIdForUpdate(sellerProfileId).ifPresent(wallet -> {
             wallet.setWithdrawableBalance(wallet.getWithdrawableBalance().add(amount));
             touch(wallet);
-            log(wallet, "refund", amount, withdrawalId, "Từ chối rút, hoàn tiền vào ví");
+            log(wallet, "refund", amount, WITHDRAWAL, withdrawalId, "Từ chối rút, hoàn tiền vào ví");
+        });
+    }
+
+    /** Bàn giao vận chuyển: giữ phần thực nhận của đơn (tăng tổng số dư + đang giữ). */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void holdForOrder(Long sellerProfileId, BigDecimal amount, Long sellerOrderId) {
+        walletRepository.findBySellerProfileIdForUpdate(sellerProfileId).ifPresent(wallet -> {
+            wallet.setPendingBalance(wallet.getPendingBalance().add(amount));
+            wallet.setBalance(wallet.getBalance().add(amount));
+            touch(wallet);
+            log(wallet, "hold", amount, SELLER_ORDER, sellerOrderId, "Giữ tiền đơn hàng");
+        });
+    }
+
+    /** Khách xác nhận đã nhận hàng: chuyển phần thực nhận từ "đang giữ" sang "có thể rút". */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void releaseForOrder(Long sellerProfileId, BigDecimal amount, Long sellerOrderId) {
+        walletRepository.findBySellerProfileIdForUpdate(sellerProfileId).ifPresent(wallet -> {
+            wallet.setPendingBalance(wallet.getPendingBalance().subtract(amount).max(BigDecimal.ZERO));
+            wallet.setWithdrawableBalance(wallet.getWithdrawableBalance().add(amount));
+            touch(wallet);
+            log(wallet, "release", amount, SELLER_ORDER, sellerOrderId, "Đơn hoàn thành, tiền có thể rút");
+        });
+    }
+
+    /** Huỷ đơn đang giao: bỏ phần tiền đã giữ ở holdForOrder. */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void reverseOrderHold(Long sellerProfileId, BigDecimal amount, Long sellerOrderId) {
+        walletRepository.findBySellerProfileIdForUpdate(sellerProfileId).ifPresent(wallet -> {
+            wallet.setPendingBalance(wallet.getPendingBalance().subtract(amount).max(BigDecimal.ZERO));
+            wallet.setBalance(wallet.getBalance().subtract(amount).max(BigDecimal.ZERO));
+            touch(wallet);
+            log(wallet, "refund", amount, SELLER_ORDER, sellerOrderId, "Hủy đơn, hoàn phần giữ chỗ");
         });
     }
 
@@ -78,13 +112,14 @@ public class WalletService {
         walletRepository.save(wallet);
     }
 
-    private void log(SellerWallet wallet, String type, BigDecimal amount, Long referenceId, String description) {
+    private void log(SellerWallet wallet, String type, BigDecimal amount, String referenceType, Long referenceId,
+                     String description) {
         WalletTransaction tx = new WalletTransaction();
         tx.setSellerWalletId(wallet.getId());
         tx.setType(type);
         tx.setAmount(amount);
         tx.setBalanceAfter(wallet.getBalance());
-        tx.setReferenceType(REFERENCE_TYPE);
+        tx.setReferenceType(referenceType);
         tx.setReferenceId(referenceId);
         tx.setDescription(description);
         transactionRepository.save(tx);

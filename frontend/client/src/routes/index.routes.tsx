@@ -12,6 +12,9 @@ import ProfileTab from "../pages/account/ProfileTab";
 import AddressesTab from "../pages/account/AddressesTab";
 import ChangePasswordTab from "../pages/account/ChangePasswordTab";
 import SessionsTab from "../pages/account/SessionsTab";
+import OrdersTab from "../pages/account/OrdersTab";
+import OrderDetailTab from "../pages/account/OrderDetailTab";
+import VouchersTab from "../pages/account/VouchersTab";
 import CartPage from "../pages/cart";
 
 export const allRoutes = [
@@ -55,6 +58,9 @@ export const allRoutes = [
             element: <AccountLayout />,
             children: [
               { index: true, element: <ProfileTab /> },
+              { path: "don-hang", element: <OrdersTab /> },
+              { path: "don-hang/:id", element: <OrderDetailTab /> },
+              { path: "uu-dai", element: <VouchersTab /> },
               { path: "dia-chi", element: <AddressesTab /> },
               { path: "doi-mat-khau", element: <ChangePasswordTab /> },
               { path: "phien-dang-nhap", element: <SessionsTab /> },
