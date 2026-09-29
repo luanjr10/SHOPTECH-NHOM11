@@ -24,6 +24,8 @@ public interface WithdrawalRequestRepository extends JpaRepository<WithdrawalReq
 
     Optional<WithdrawalRequest> findFirstByPayoutReference(String payoutReference);
 
+    Page<WithdrawalRequest> findBySellerProfileId(Long sellerProfileId, Pageable pageable);
+
     @Query("select coalesce(sum(w.amount), 0) from WithdrawalRequest w where w.status = 'approved'")
     BigDecimal sumApproved();
 }

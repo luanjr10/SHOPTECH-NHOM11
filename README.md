@@ -27,13 +27,26 @@ Hệ thống quản trị sàn thương mại điện tử bán đồ công ngh�
 - **Cài đặt tài khoản** — hồ sơ, ảnh đại diện, đổi mật khẩu, đăng xuất thiết bị khác
 - **Đăng ký / Đăng nhập** — đăng ký, đăng nhập (mật khẩu hoặc Google), quên mật khẩu bằng mã email, xác thực email
 
+### Kênh người bán (Seller Center)
+
+Người bán đăng nhập chung trang quản trị, menu hiển thị theo vai trò; chọn gian hàng đang quản lý ở thanh trên cùng.
+
+- **Dashboard gian hàng** — doanh thu thực nhận, đơn hoàn tất, khách hàng (30 ngày), top sản phẩm / danh mục / khách hàng, hoạt động gần đây, số dư ví
+- **Gian hàng** — tạo gian hàng (chờ admin duyệt), sửa tên / mô tả / logo, chuyển gian hàng đang quản lý
+- **Sản phẩm** — thêm/sửa/xoá sản phẩm của gian hàng (dùng chung form với admin), tìm kiếm, sắp xếp, phân trang
+- **Kho hàng** — tồn kho, lọc sản phẩm sắp hết hàng, nhập thêm / xuất hao hụt, lịch sử điều chỉnh
+- **Doanh thu** — số đơn hoàn tất, tổng giá trị đơn, hoa hồng sàn, doanh thu thực nhận theo 7 / 30 / 90 ngày, biểu đồ theo ngày
+- **Ví** — tổng số dư, tiền đang giữ, tiền có thể rút, lịch sử biến động ví
+- **Rút tiền** — tạo yêu cầu rút (chuyển khoản / MoMo / VNPay / OnePay / SePay), theo dõi trạng thái duyệt
+- **Cài đặt gian hàng** — thông tin gian hàng, địa chỉ lấy hàng theo danh mục tỉnh / quận / phường của Giao Hàng Nhanh
+
 ## Phân công
 
 | Thành viên     | Chức năng phụ trách                                                                 |
 |----------------|--------------------------------------------------------------------------------------|
-| Bùi Văn Luân   | Dashboard, Quản lý sản phẩm, Quản lý danh mục, Quản lý thương hiệu, Quản lý nhân viên |
+| Bùi Văn Luân   | Dashboard, Quản lý sản phẩm, Quản lý danh mục, Quản lý thương hiệu, Quản lý nhân viên; Kênh người bán: Dashboard, Gian hàng, Sản phẩm, Kho hàng |
 | Hồ Trọng Dũng  | Khách hàng, Nổi bật trang chủ, Người bán, Gian hàng, Đơn hàng & Hoá đơn, Đánh giá & Theo dõi |
-| Nguyễn Phạm Thành Công | Hoa hồng, Voucher, Rút tiền, Quỹ sàn, Cài đặt tài khoản, Đăng ký / Đăng nhập |
+| Nguyễn Phạm Thành Công | Hoa hồng, Voucher, Rút tiền, Quỹ sàn, Cài đặt tài khoản, Đăng ký / Đăng nhập; Kênh người bán: Doanh thu, Ví, Rút tiền, Cài đặt gian hàng |
 
 ## Kiến trúc
 

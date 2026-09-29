@@ -103,3 +103,9 @@ app:
       merchant-id: ${SEPAY_MERCHANT_ID:}
       secret-key: ${SEPAY_SECRET_KEY:}
       checkout-url: ${SEPAY_CHECKOUT_URL:https://pay-sandbox.sepay.vn/v1/checkout/init}
+  # Giao Hàng Nhanh (STAGING khi dev/test) — danh mục tỉnh/quận/phường cho địa chỉ lấy hàng của gian hàng
+  ghn:
+    api-url: ${GHN_API_URL:https://dev-online-gateway.ghn.vn}
+    token: ${GHN_TOKEN:}
+    shop-id: ${GHN_SHOP_ID:}
+    allow-production: ${GHN_ALLOW_PRODUCTION:false}

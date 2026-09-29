@@ -16,8 +16,22 @@ import ManageCouponsPage from "../pages/ManageCoupons";
 import ManageWithdrawalsPage from "../pages/ManageWithdrawals";
 import PlatformFundsPage from "../pages/PlatformFunds";
 import SettingsPage from "../pages/Settings";
+import SellerDashboardPage from "../pages/seller/SellerDashboard";
+import SellerStoresPage from "../pages/seller/SellerStores";
+import SellerProductsPage from "../pages/seller/SellerProducts";
+import SellerInventoryPage from "../pages/seller/SellerInventory";
+import SellerRevenuePage from "../pages/seller/SellerRevenue";
+import SellerWalletPage from "../pages/seller/SellerWallet";
+import SellerWithdrawalsPage from "../pages/seller/SellerWithdrawals";
 import LayoutDefault from "../partials/layout";
 import RequireRole from "../components/RequireRole";
+import { useAuth } from "../context/AuthContext";
+
+/** Trang chủ: seller xem tổng quan gian hàng, admin/nhân viên xem tổng quan sàn. */
+function HomeDashboard() {
+  const { user } = useAuth();
+  return user?.role === "seller" ? <SellerDashboardPage /> : <Dashboard />;
+}
 
 export const routes = [
   {
@@ -30,12 +44,12 @@ export const routes = [
   },
   {
     element: (
-      <RequireRole roles={["admin", "employee"]}>
+      <RequireRole roles={["admin", "employee", "seller"]}>
         <LayoutDefault />
       </RequireRole>
     ),
     children: [
-      { path: "/", element: <Dashboard /> },
+      { path: "/", element: <HomeDashboard /> },
       { path: "/products", element: <RequireRole roles={["admin", "employee"]} module="products"><ManageProductsPage /></RequireRole> },
       { path: "/categories", element: <RequireRole roles={["admin", "employee"]} module="categories"><ManageCategoriesPage /></RequireRole> },
       { path: "/brands", element: <RequireRole roles={["admin", "employee"]} module="brands"><ManageBrandsPage /></RequireRole> },
@@ -50,6 +64,12 @@ export const routes = [
       { path: "/vouchers", element: <RequireRole roles={["admin", "employee"]} module="vouchers"><ManageCouponsPage /></RequireRole> },
       { path: "/withdrawals", element: <RequireRole roles={["admin", "employee"]} module="withdrawals"><ManageWithdrawalsPage /></RequireRole> },
       { path: "/platform-funds", element: <RequireRole roles={["admin", "employee"]} module="platform_funds"><PlatformFundsPage /></RequireRole> },
+      { path: "/seller/stores", element: <RequireRole roles={["seller"]}><SellerStoresPage /></RequireRole> },
+      { path: "/seller/products", element: <RequireRole roles={["seller"]}><SellerProductsPage /></RequireRole> },
+      { path: "/seller/inventory", element: <RequireRole roles={["seller"]}><SellerInventoryPage /></RequireRole> },
+      { path: "/seller/revenue", element: <RequireRole roles={["seller"]}><SellerRevenuePage /></RequireRole> },
+      { path: "/seller/wallet", element: <RequireRole roles={["seller"]}><SellerWalletPage /></RequireRole> },
+      { path: "/seller/withdrawals", element: <RequireRole roles={["seller"]}><SellerWithdrawalsPage /></RequireRole> },
       { path: "/settings", element: <SettingsPage /> },
     ],
   },

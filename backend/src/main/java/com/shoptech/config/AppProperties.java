@@ -15,7 +15,8 @@ public record AppProperties(
         Mail mail,
         Google google,
         Payment payment,
-        Auth auth
+        Auth auth,
+        Ghn ghn
 ) {
 
     public record Jwt(String secret, long ttlMinutes, String cookieName, boolean cookieSecure, long refreshTtlMinutes) {
@@ -29,6 +30,10 @@ public record AppProperties(
     }
 
     public record Auth(int resetCodeTtlSeconds, int verifyEmailTtlMinutes) {
+    }
+
+    /** Giao Hàng Nhanh — dữ liệu tỉnh/quận/phường cho địa chỉ lấy hàng. allowProduction=false chặn gọi nhầm môi trường thật. */
+    public record Ghn(String apiUrl, String token, String shopId, boolean allowProduction) {
     }
 
     public record Payment(Momo momo, Vnpay vnpay, OnePay onepay, SePay sepay) {

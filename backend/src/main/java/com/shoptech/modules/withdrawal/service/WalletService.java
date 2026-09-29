@@ -1,5 +1,6 @@
 package com.shoptech.modules.withdrawal.service;
 
+import com.shoptech.common.exception.ApiException;
 import com.shoptech.modules.seller.entity.SellerWallet;
 import com.shoptech.modules.seller.repository.SellerWalletRepository;
 import com.shoptech.modules.withdrawal.entity.WalletTransaction;
@@ -25,6 +26,32 @@ public class WalletService {
 
     private final SellerWalletRepository walletRepository;
     private final WalletTransactionRepository transactionRepository;
+
+    /** Ví của người bán (tạo ví rỗng nếu chưa có — firstOrCreate). */
+    @Transactional
+    public SellerWallet getOrCreate(Long sellerProfileId) {
+        return walletRepository.findBySellerProfileId(sellerProfileId).orElseGet(() -> {
+            SellerWallet wallet = new SellerWallet();
+            wallet.setSellerProfileId(sellerProfileId);
+            return walletRepository.saveAndFlush(wallet);
+        });
+    }
+
+    /**
+     * Seller tạo yêu cầu rút: khoá ví, kiểm tra đủ "có thể rút" rồi giữ chỗ số tiền đó.
+     * Ném 422 khi vượt số dư — gọi trong cùng transaction với việc lưu yêu cầu rút.
+     */
+    @Transactional(propagation = Propagation.MANDATORY)
+    public void reserveForWithdrawal(Long sellerProfileId, BigDecimal amount, Long withdrawalId) {
+        SellerWallet wallet = walletRepository.findBySellerProfileIdForUpdate(sellerProfileId)
+                .orElseThrow(() -> ApiException.unprocessable("Số tiền rút vượt quá số dư có thể rút"));
+        if (amount.compareTo(wallet.getWithdrawableBalance()) > 0) {
+            throw ApiException.unprocessable("Số tiền rút vượt quá số dư có thể rút");
+        }
+        wallet.setWithdrawableBalance(wallet.getWithdrawableBalance().subtract(amount).max(BigDecimal.ZERO));
+        touch(wallet);
+        log(wallet, "hold", amount, withdrawalId, "Giữ chỗ yêu cầu rút tiền");
+    }
 
     /** Rút tiền được duyệt: trừ tổng số dư. */
     @Transactional(propagation = Propagation.MANDATORY)

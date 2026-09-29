@@ -14,6 +14,8 @@ public interface SellerWalletRepository extends JpaRepository<SellerWallet, Long
 
     boolean existsBySellerProfileId(Long sellerProfileId);
 
+    Optional<SellerWallet> findBySellerProfileId(Long sellerProfileId);
+
     /** Khoá ví khi cộng/trừ số dư để tránh ghi đè lẫn nhau. */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select w from SellerWallet w where w.sellerProfileId = :profileId")

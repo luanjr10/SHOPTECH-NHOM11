@@ -17,6 +17,9 @@ import {
   Wallet,
   Landmark,
   Settings,
+  Boxes,
+  TrendingUp,
+  Banknote,
   ChevronsLeft,
   type LucideIcon,
 } from "lucide-react";
@@ -78,6 +81,28 @@ const SECTIONS: NavSection[] = [
   },
 ];
 
+const SELLER_SECTIONS: NavSection[] = [
+  {
+    title: "Tổng quan",
+    items: [{ to: "/", label: "Dashboard", icon: LayoutDashboard, end: true }],
+  },
+  {
+    title: "Kênh người bán",
+    items: [
+      { to: "/seller/stores", label: "Gian hàng", icon: Store },
+      { to: "/seller/products", label: "Sản phẩm", icon: Package },
+      { to: "/seller/inventory", label: "Kho hàng", icon: Boxes },
+      { to: "/seller/revenue", label: "Doanh thu", icon: TrendingUp },
+      { to: "/seller/wallet", label: "Ví", icon: Wallet },
+      { to: "/seller/withdrawals", label: "Rút tiền", icon: Banknote },
+    ],
+  },
+  {
+    title: "Khác",
+    items: [{ to: "/settings", label: "Cài đặt", icon: Settings }],
+  },
+];
+
 function NavItem({ item }: { item: NavItemDef }) {
   const Icon = item.icon;
   return (
@@ -122,7 +147,9 @@ function Sidebar({
 
   // Nhân viên chỉ thấy các mục được cấp quyền xem; quản lý nhân viên chỉ dành cho admin.
   const sections: NavSection[] =
-    user?.role === "employee"
+    user?.role === "seller"
+      ? SELLER_SECTIONS
+      : user?.role === "employee"
       ? SECTIONS
           .map((section) => ({
             ...section,
