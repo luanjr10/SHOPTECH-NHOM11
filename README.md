@@ -6,6 +6,7 @@ Hệ thống quản trị sàn thương mại điện tử bán đồ công ngh�
 |--------------------|-----------------------------------------------------------------------|
 | `backend/`         | REST API — Java Spring Boot (Spring MVC, JPA/MySQL, MongoDB, Spring Security + JWT) |
 | `frontend/admin/`  | Giao diện quản trị — React + TypeScript + Vite + Tailwind CSS         |
+| `frontend/client/` | Trang mua sắm cho khách hàng — React + TypeScript + Vite + Tailwind CSS |
 
 ## Chức năng
 
@@ -44,18 +45,34 @@ Người bán đăng nhập chung trang quản trị, menu hiển thị theo vai
 - **Rút tiền** — tạo yêu cầu rút (chuyển khoản / MoMo / VNPay / OnePay / SePay), theo dõi trạng thái duyệt
 - **Cài đặt gian hàng** — thông tin gian hàng, địa chỉ lấy hàng theo danh mục tỉnh / quận / phường của Giao Hàng Nhanh
 
+### Trang khách hàng (frontend/client)
+
+- **Trang chủ** — danh mục, banner, Deal sốc, Flash sale (đếm ngược), sản phẩm nổi bật theo từng danh mục
+- **Lọc sản phẩm** — trang danh mục (thương hiệu, Quick Link, sắp xếp theo giá / giảm giá), tìm kiếm theo từ khoá, lọc theo tỉnh
+- **Chi tiết sản phẩm** — ảnh, biến thể (SKU, giá, tồn kho), thông số kỹ thuật, thêm vào giỏ, sản phẩm gợi ý
+- **Đánh giá & Bình luận** — đánh giá sao kèm ảnh (nhãn "Đã mua hàng"), điểm trung bình và phân bố sao, hỏi đáp dưới sản phẩm (nhãn người bán / quản trị viên), hỏi & đáp ở trang danh mục
+- **Thanh toán OnePay / SePay** — thẻ ATM nội địa qua OnePay; chuyển khoản tự động qua SePay (xác nhận đơn qua webhook)
+- **Thanh toán** — phí vận chuyển GHN theo từng gian hàng (cùng tỉnh miễn phí, giao 2 giờ), mã giảm giá / voucher, đặt hàng tách theo gian hàng, thanh toán COD / MoMo / VNPay (sandbox), trang kết quả thanh toán
+- **Chatbot AI** — trợ lý tư vấn (Groq), tự tra sản phẩm thật theo nhu cầu / ngân sách, gợi ý kèm thẻ sản phẩm
+- **Đăng ký / Đăng nhập** — tài khoản khách hàng (mật khẩu hoặc Google), quên mật khẩu
+- **Giỏ hàng** — lưu theo tài khoản, chọn biến thể, kiểm tra tồn kho, tạm tính theo giá hiện tại
+- **Hồ sơ & cài đặt chung** — hồ sơ, ảnh đại diện, đơn hàng của tôi (xem / huỷ, xác nhận đã nhận hàng), hạng thành viên & nhận voucher theo hạng, sổ địa chỉ (tỉnh / quận / phường GHN), đổi mật khẩu, đăng xuất thiết bị khác
+- **Kênh người bán** — gửi đơn đăng ký mở gian hàng, theo dõi trạng thái duyệt
+- **Gian hàng & chi tiết shop** — danh sách gian hàng (tìm kiếm, sắp xếp), trang shop với chỉ số uy tín, danh mục, sản phẩm, theo dõi gian hàng
+- **Yêu cầu hoàn trả / Bảo hành** — gửi yêu cầu hoàn trả hoặc bảo hành kèm ảnh minh chứng cho sản phẩm trong đơn đã hoàn tất
+
 ## Phân công
 
 | Thành viên     | Chức năng phụ trách                                                                 |
 |----------------|--------------------------------------------------------------------------------------|
-| Bùi Văn Luân   | Dashboard, Quản lý sản phẩm, Quản lý danh mục, Quản lý thương hiệu, Quản lý nhân viên; Kênh người bán: Dashboard, Gian hàng, Sản phẩm, Kho hàng |
-| Hồ Trọng Dũng  | Khách hàng, Nổi bật trang chủ, Người bán, Gian hàng, Đơn hàng & Hoá đơn, Đánh giá & Theo dõi; Kênh người bán: Đơn hàng & Hoá đơn, Khách hàng, Hoàn trả / Bảo hành, Đánh giá & Theo dõi |
-| Nguyễn Phạm Thành Công | Hoa hồng, Voucher, Rút tiền, Quỹ sàn, Cài đặt tài khoản, Đăng ký / Đăng nhập; Kênh người bán: Doanh thu, Ví, Rút tiền, Cài đặt gian hàng |
+| Bùi Văn Luân   | Dashboard, Quản lý sản phẩm, Quản lý danh mục, Quản lý thương hiệu, Quản lý nhân viên; Kênh người bán: Dashboard, Gian hàng, Sản phẩm, Kho hàng; Trang khách hàng: Trang chủ, Thanh toán MoMo / VNPay, Chatbot AI |
+| Hồ Trọng Dũng  | Khách hàng, Nổi bật trang chủ, Người bán, Gian hàng, Đơn hàng & Hoá đơn, Đánh giá & Theo dõi; Kênh người bán: Đơn hàng & Hoá đơn, Khách hàng, Hoàn trả / Bảo hành, Đánh giá & Theo dõi; Trang khách hàng: Lọc sản phẩm, Chi tiết sản phẩm, Đánh giá & Bình luận, Thanh toán OnePay / SePay |
+| Nguyễn Phạm Thành Công | Hoa hồng, Voucher, Rút tiền, Quỹ sàn, Cài đặt tài khoản, Đăng ký / Đăng nhập; Kênh người bán: Doanh thu, Ví, Rút tiền, Cài đặt gian hàng; Trang khách hàng: Đăng ký / Đăng nhập, Giỏ hàng, Hồ sơ & cài đặt chung, Kênh người bán, Gian hàng & chi tiết shop, Yêu cầu hoàn trả |
 
 ## Kiến trúc
 
 ```
-React (frontend/admin)
+React (frontend/admin, frontend/client)
         │  REST / JSON (JWT trong cookie HttpOnly)
         ▼
 Spring Boot (backend) — Modular Monolith
@@ -75,10 +92,10 @@ cd backend
 ```
 
 ```bash
-# Frontend
-cd frontend/admin
+# Frontend (trang quản trị hoặc trang khách hàng)
+cd frontend/admin   # hoặc: cd frontend/client
 npm install
 npm run dev
 ```
 
-Backend chạy ở `http://localhost:8000`, trang quản trị ở `http://localhost:5173`.
+Backend chạy ở `http://localhost:8000`, trang quản trị ở `http://localhost:5173`, trang khách hàng ở `http://localhost:5175`.
