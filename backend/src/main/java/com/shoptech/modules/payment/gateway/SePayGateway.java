@@ -3,6 +3,7 @@ package com.shoptech.modules.payment.gateway;
 import com.shoptech.config.AppProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.Base64;
 import java.util.LinkedHashMap;
@@ -23,6 +24,26 @@ public class SePayGateway {
     private final AppProperties props;
 
     public record CheckoutForm(String action, Map<String, String> fields) {
+
+        /** Trang HTML tự gửi form POST sang SePay (dùng cho cả thanh toán đơn hàng và giải ngân rút tiền). */
+        public String autoSubmitHtml() {
+            StringBuilder inputs = new StringBuilder();
+            fields.forEach((k, v) -> inputs.append("<input type=\"hidden\" name=\"")
+                    .append(HtmlUtils.htmlEscape(k)).append("\" value=\"").append(HtmlUtils.htmlEscape(v)).append("\">"));
+            return """
+                    <!DOCTYPE html>
+                    <html lang="vi"><head><meta charset="UTF-8"><title>Đang chuyển đến SePay...</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <style>body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+                    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f6f8fa;color:#1f2937}
+                    .box{text-align:center}.spinner{width:36px;height:36px;border:3px solid #e2e6ea;border-top-color:#0f8a5f;
+                    border-radius:50%%;margin:0 auto 16px;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style>
+                    </head><body><div class="box"><div class="spinner"></div><p>Đang chuyển đến cổng thanh toán SePay...</p>
+                    <form id="sepay-checkout-form" method="POST" action="%s">%s
+                    <noscript><button type="submit">Tiếp tục thanh toán</button></noscript></form></div>
+                    <script>document.getElementById('sepay-checkout-form').submit();</script></body></html>
+                    """.formatted(HtmlUtils.htmlEscape(action), inputs);
+        }
     }
 
     public CheckoutForm checkoutForm(String invoiceNumber, long amount, String description,
