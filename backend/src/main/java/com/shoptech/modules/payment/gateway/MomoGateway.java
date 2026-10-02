@@ -20,18 +20,13 @@ public class MomoGateway {
 
     /** @return payUrl để chuyển người dùng sang trang thanh toán MoMo */
     public String createPaymentUrl(String orderId, long amount, String orderInfo, String redirectUrl) {
-        return createPaymentUrl(orderId, amount, orderInfo, redirectUrl, redirectUrl);
-    }
-
-    /** @param ipnUrl MoMo gọi server-to-server báo kết quả (không tới được localhost khi chạy local) */
-    public String createPaymentUrl(String orderId, long amount, String orderInfo, String redirectUrl, String ipnUrl) {
         var cfg = props.payment().momo();
         String amountStr = String.valueOf(amount);
         String extraData = "";
         String raw = "accessKey=" + cfg.accessKey()
                 + "&amount=" + amountStr
                 + "&extraData=" + extraData
-                + "&ipnUrl=" + ipnUrl
+                + "&ipnUrl=" + redirectUrl
                 + "&orderId=" + orderId
                 + "&orderInfo=" + orderInfo
                 + "&partnerCode=" + cfg.partnerCode()
@@ -48,7 +43,7 @@ public class MomoGateway {
         body.put("orderId", orderId);
         body.put("orderInfo", orderInfo);
         body.put("redirectUrl", redirectUrl);
-        body.put("ipnUrl", ipnUrl);
+        body.put("ipnUrl", redirectUrl);
         body.put("lang", "vi");
         body.put("autoCapture", true);
         body.put("extraData", extraData);

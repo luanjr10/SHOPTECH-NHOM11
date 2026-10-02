@@ -20,6 +20,13 @@ import SellerDashboardPage from "../pages/seller/SellerDashboard";
 import SellerStoresPage from "../pages/seller/SellerStores";
 import SellerProductsPage from "../pages/seller/SellerProducts";
 import SellerInventoryPage from "../pages/seller/SellerInventory";
+import SellerRevenuePage from "../pages/seller/SellerRevenue";
+import SellerWalletPage from "../pages/seller/SellerWallet";
+import SellerWithdrawalsPage from "../pages/seller/SellerWithdrawals";
+import SellerOrdersPage from "../pages/seller/SellerOrders";
+import SellerCustomersPage from "../pages/seller/SellerCustomers";
+import SellerReturnsPage from "../pages/seller/SellerReturns";
+import SellerReviewsPage from "../pages/seller/SellerReviews";
 import LayoutDefault from "../partials/layout";
 import RequireRole from "../components/RequireRole";
 import { useAuth } from "../context/AuthContext";
@@ -63,7 +70,14 @@ export const routes = [
       { path: "/platform-funds", element: <RequireRole roles={["admin", "employee"]} module="platform_funds"><PlatformFundsPage /></RequireRole> },
       { path: "/seller/stores", element: <RequireRole roles={["seller"]}><SellerStoresPage /></RequireRole> },
       { path: "/seller/products", element: <RequireRole roles={["seller"]}><SellerProductsPage /></RequireRole> },
+      { path: "/seller/orders", element: <RequireRole roles={["seller"]}><SellerOrdersPage /></RequireRole> },
+      { path: "/seller/customers", element: <RequireRole roles={["seller"]}><SellerCustomersPage /></RequireRole> },
+      { path: "/seller/returns", element: <RequireRole roles={["seller"]}><SellerReturnsPage /></RequireRole> },
+      { path: "/seller/reviews", element: <RequireRole roles={["seller"]}><SellerReviewsPage /></RequireRole> },
       { path: "/seller/inventory", element: <RequireRole roles={["seller"]}><SellerInventoryPage /></RequireRole> },
+      { path: "/seller/revenue", element: <RequireRole roles={["seller"]}><SellerRevenuePage /></RequireRole> },
+      { path: "/seller/wallet", element: <RequireRole roles={["seller"]}><SellerWalletPage /></RequireRole> },
+      { path: "/seller/withdrawals", element: <RequireRole roles={["seller"]}><SellerWithdrawalsPage /></RequireRole> },
       { path: "/settings", element: <SettingsPage /> },
     ],
   },
