@@ -134,6 +134,11 @@ public class ProductService {
     // ------------------------------------------------------------------ ghi
 
     public ProductResponse create(ProductForm form, List<MultipartFile> rawImages) {
+        return create(form, rawImages, null);
+    }
+
+    /** @param storeId gian hàng sở hữu (Seller Center); null khi admin tạo. */
+    public ProductResponse create(ProductForm form, List<MultipartFile> rawImages, Long storeId) {
         List<MultipartFile> images = ImageRules.nonEmpty(rawImages);
         Validator v = requestValidator.validate(form, ProductForm.OnCreate.class);
         if (!v.has("code") && productRepository.existsByCode(form.code().trim())) {
@@ -152,6 +157,7 @@ public class ProductService {
         product.setCode(form.code().trim());
         product.setName(form.name().trim());
         product.setSlug(Slugs.slug(form.name() + "-" + form.code()));
+        product.setStoreId(storeId);
         applyForm(product, form);
         productRepository.saveAndFlush(product);
 
@@ -163,7 +169,12 @@ public class ProductService {
     }
 
     public ProductDetailResponse update(Integer id, ProductForm form, List<MultipartFile> rawImages) {
-        Product product = find(id);
+        return update(id, form, rawImages, null);
+    }
+
+    /** @param storeId khi khác null: sản phẩm phải thuộc gian hàng này (Seller Center). */
+    public ProductDetailResponse update(Integer id, ProductForm form, List<MultipartFile> rawImages, Long storeId) {
+        Product product = find(id, storeId);
         List<MultipartFile> images = ImageRules.nonEmpty(rawImages);
         Validator v = requestValidator.validate(form);
         validateCommon(v, form);
@@ -193,7 +204,11 @@ public class ProductService {
     }
 
     public void delete(Integer id) {
-        Product product = find(id);
+        delete(id, null);
+    }
+
+    public void delete(Integer id, Long storeId) {
+        Product product = find(id, storeId);
         imageRepository.deleteByProductId(id);
         specificationRepository.deleteByProductId(id);
         productUseCaseRepository.deleteByProductId(id);
@@ -332,8 +347,13 @@ public class ProductService {
         return out;
     }
 
-    private Product find(Integer id) {
-        return productRepository.findById(id).orElseThrow(() -> ApiException.notFound("Không tìm thấy sản phẩm"));
+    private Product find(Integer id, Long storeId) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> ApiException.notFound("Không tìm thấy sản phẩm"));
+        if (storeId != null && !storeId.equals(product.getStoreId())) {
+            throw ApiException.notFound("Sản phẩm không thuộc gian hàng này");
+        }
+        return product;
     }
 
     private static boolean present(String s) {

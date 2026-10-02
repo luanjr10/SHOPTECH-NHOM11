@@ -75,3 +75,32 @@ export interface DashboardSummary {
   recent_activity: RecentActivityItem[];
   platform_funds: PlatformFunds;
 }
+
+export interface TopProductItem {
+  product_id: number;
+  name: string;
+  revenue: number;
+  quantity_sold: number;
+}
+
+export interface SellerWalletSummary {
+  balance: number;
+  pending_balance: number;
+  withdrawable_balance: number;
+}
+
+export interface SellerDashboardSummary {
+  kpis: {
+    revenue: DashboardKpi;
+    orders: DashboardKpi;
+    customers: DashboardKpi;
+  };
+  revenue_by_payment_method: RevenueByPaymentMethod;
+  daily_revenue: DashboardSeries;
+  top_categories: TopCategoryItem[];
+  top_products: TopProductItem[];
+  top_customers: TopCustomerItem[];
+  order_status_by_month: OrderStatusByMonth;
+  recent_activity: RecentActivityItem[];
+  wallet: SellerWalletSummary;
+}
